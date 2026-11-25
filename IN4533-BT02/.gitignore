@@ -1,0 +1,20 @@
+# Build results (.NET)
+bin/
+obj/
+out/
+publish/
+
+# IDE & User-specific files
+.vs/
+.vscode/
+.idea/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Secrets & local environment config (Không đưa mật khẩu/chuỗi kết nối thật lên GitHub)
+appsettings.Development.json
+appsettings.*.local.json
+.env
+*.env.local

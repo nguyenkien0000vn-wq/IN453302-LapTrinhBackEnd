@@ -1,0 +1,16 @@
+# Visual Studio & IDEs
+.vs/
+.vscode/
+.idea/
+*.user
+*.suo
+
+# Build & packages
+bin/
+obj/
+publish/
+*.log
+
+# Sensitive environment variables
+.env
+*.local

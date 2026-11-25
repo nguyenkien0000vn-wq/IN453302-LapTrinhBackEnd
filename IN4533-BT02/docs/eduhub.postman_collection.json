@@ -1,0 +1,134 @@
+{
+  "info": {
+    "name": "EduHub Mini - IN4533 BT02",
+    "_postman_id": "2a8c9f31-ed45-4533-b102-eduhub000002",
+    "description": "Bộ sưu tập kiểm thử 4 chức năng REST API của phân hệ registrations (EduHub mini).",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:5000",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "1. Xem danh sách đăng ký của khoá học 2 (200 OK)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Trả về 200 OK', () => pm.response.to.have.status(200));",
+              "pm.test('Body là mảng JSON', () => pm.expect(pm.response.json()).to.be.an('array'));"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [
+          { "key": "Accept", "value": "application/json" }
+        ],
+        "url": "{{baseUrl}}/api/v1/courses/2/registrations"
+      }
+    },
+    {
+      "name": "2. Tạo đăng ký mới (201 Created)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Trả về 201 Created', () => pm.response.to.have.status(201));",
+              "pm.test('Trạng thái mặc định là pending', () => pm.expect(pm.response.json().status).to.eql('pending'));"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"memberId\": 3\n}"
+        },
+        "url": "{{baseUrl}}/api/v1/courses/2/registrations"
+      }
+    },
+    {
+      "name": "3. Xác nhận đăng ký số 7 (200 OK)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Trả về 200 OK', () => pm.response.to.have.status(200));",
+              "pm.test('Trạng thái đã đổi sang confirmed', () => pm.expect(pm.response.json().status).to.eql('confirmed'));"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "PATCH",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"status\": \"confirmed\"\n}"
+        },
+        "url": "{{baseUrl}}/api/v1/registrations/7"
+      }
+    },
+    {
+      "name": "4. Huỷ đăng ký số 7 (204 No Content)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Trả về 204 No Content', () => pm.response.to.have.status(204));"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "DELETE",
+        "url": "{{baseUrl}}/api/v1/registrations/7"
+      }
+    },
+    {
+      "name": "5. Kiểm tra lỗi trùng đăng ký (409 Conflict - Problem Details)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Trả về 409 Conflict', () => pm.response.to.have.status(409));"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"memberId\": 3\n}"
+        },
+        "url": "{{baseUrl}}/api/v1/courses/2/registrations"
+      }
+    }
+  ]
+}
